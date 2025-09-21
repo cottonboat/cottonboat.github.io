@@ -36,6 +36,65 @@ let currentIndex = 0;
 let questionEl, userDigitsEl, digitPad, leftBtn, rightBtn, submitBtn;
 const quizBox = document.getElementById("quiz-box");
 
+// set timer
+let totalTime = 3 * 60; // 3 นาทีเป็นวินาที
+let timerInterval;
+
+function startTimer() {
+  updateTimerDisplay(); // แสดงครั้งแรก
+  timerInterval = setInterval(() => {
+    totalTime--;
+    updateTimerDisplay();
+
+    if (totalTime <= 0) {
+      clearInterval(timerInterval);
+      endQuiz(); // เวลาหมด → แสดงคะแนน
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(totalTime / 60).toString().padStart(2, "0");
+  const seconds = (totalTime % 60).toString().padStart(2, "0");
+  const timerEl = document.getElementById("timer");
+  timerEl.textContent = `${minutes}:${seconds}`;
+
+  // เปลี่ยนสีเมื่อเวลาน้อยกว่า 10 วินาที
+  if (totalTime <= 10) {
+    timerEl.classList.add("warning");
+  } else {
+    timerEl.classList.remove("warning");
+  }
+}
+
+function endQuiz() {
+  // หยุด timer
+  clearInterval(timerInterval);
+
+  // ซ่อนส่วน quiz
+  quizBox.style.display = "none";
+
+  // แสดงคะแนน
+  const scoreEl = document.createElement("div");
+  scoreEl.id = "score-display";
+  scoreEl.textContent = `SCORE: ${score}/10`;
+  document.body.appendChild(scoreEl);
+
+  // ปุ่มรีสตาร์ท
+  const restartBtn = document.createElement("button");
+  restartBtn.id = "restart-btn";
+  restartBtn.textContent = "RESTART";
+  restartBtn.onclick = () => {
+    scoreEl.remove();
+    restartBtn.remove();
+    quizBox.style.display = "block";
+    initQuiz();  // เริ่ม quiz ใหม่
+  };
+  document.body.appendChild(restartBtn);
+}
+
+
+
 // --- เริ่ม quiz / รีสตาร์ท ---
 function initQuiz() {
   // คืนค่า HTML ของ quizBox
@@ -59,6 +118,8 @@ function initQuiz() {
   currentIndex = 0;
   score = 0;
   questionCount = 0;
+  totalTime = 3 * 60;   // ตั้งเวลาใหม่
+  startTimer();          // เริ่มนับถอยหลัง
 
   // เลือก DOM ใหม่
   questionEl = document.getElementById("question");
