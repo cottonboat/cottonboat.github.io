@@ -74,8 +74,8 @@ body {
   display: flex;
   flex-wrap: wrap;       /* ให้ปุ่มขึ้นบรรทัดใหม่ถ้าเต็ม */
   justify-content: center;
-  gap: 15px;             /* <-- ระยะห่างระหว่างปุ่ม (แนวนอน+แนวตั้ง) */
-  margin-bottom: 5px;   /* ระยะห่างจากส่วนอื่น */
+  gap: 3px;             /* <-- ระยะห่างระหว่างปุ่ม (แนวนอน+แนวตั้ง) */
+  margin-bottom: 20px;  /* ระยะห่างจากส่วนอื่น */
 }
 
 #digit-pad button {
@@ -84,7 +84,7 @@ body {
   font-size: 1.5rem;
   margin: 1px;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 
 #submit-btn {
