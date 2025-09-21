@@ -1,0 +1,113 @@
+/* จัด body ให้อยู่กลางหน้าจอ */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Source Code Pro", monospace;
+  background: #f8f5eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column; /* เรียงบนลงล่าง */
+  text-align: center;
+}
+
+/* ปรับ font ทุกอัน */
+#question, .numbers, #answers button {
+  font-family: "Source Code Pro", monospace;
+  font-variant-numeric: tabular-nums; /* ตัวเลขเท่ากันทุกหลัก */
+}
+
+/* คำถาม */
+#question {
+  font-size: 4rem;        /* ขนาดตัวอักษร */
+  text-align: right;      /* จัดชิดขวา */
+  line-height: 1.5;       /* ระยะห่างระหว่างบรรทัด */
+  margin-bottom: 60px;
+}
+
+
+/* กล่องโจทย์ */
+.equation {
+  display: flex;
+  justify-content: center;   
+  align-items: center;       /* จัดบวกให้อยู่กลางระหว่างบรรทัด */
+  font-size: 4rem;
+  margin-left: 60px;
+  margin-bottom: 130px;
+}
+
+.operator {
+  margin-right: 0.5em;       /* ระยะห่างระหว่าง + และตัวเลข */
+  display: flex;
+  align-items: center;       /* ให้อยู่กลางระหว่างบรรทัดเลข */
+}
+
+.numbers {
+  display: flex;
+  flex-direction: column;    /* จัดเลขเป็นแนวตั้ง */
+  text-align: right;         /* ชิดขวา */
+  line-height: 1.5;
+}
+
+
+/* ปุ่มคำตอบ */
+#answers button {
+  display: block;
+  width: 80%;             /* ไม่เต็มจอ แต่กดง่าย */
+  max-width: 300px;
+  min-width: 280px;
+  margin: 10px auto;
+  padding: 15px;
+  font-size: 2.1rem;
+  border-radius: 2px;
+  border: none;
+  background: #cfc1af;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  box-sizing: border-box; /* ให้ padding ไม่กระทบ width */
+}
+
+#answers button.correct {
+  background: #569dcd !important; /* เขียว */
+  color: white !important;
+}
+
+#answers button.wrong {
+  background: #c76b64 !important; /* แดง */
+  color: white !important;
+}
+
+#answers button.inactive {
+  opacity: 0.5;       /* สีจางลง */
+  cursor: not-allowed; 
+  color: black;
+}
+
+
+/* score หลังจากเล่นครบ 10 ข้อ */
+#score-display {
+  font-size: 2.5rem;
+  text-align: center;
+  margin: 0 30px 80px 30px;
+  color: #333; /* สีตัวอักษร */
+}
+
+/* ปุ่มรีสตาร์ท */
+#restart-btn {
+  font-size: 2rem;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 8px;
+  background: #569dcd; /* ฟ้า */
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#restart-btn:hover {
+  background: #4177a5; /* สีเข้มเมื่อ hover */
+}
+
+
+
