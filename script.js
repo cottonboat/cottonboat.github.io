@@ -1,133 +1,133 @@
-// ฟังก์ชันสุ่มโจทย์เลขบวก 4 หลัก
 function generateQuestion() {
-  // สุ่มว่าโจทย์จะเป็น 3 หลักหรือ 4 หลัก
   const digits1 = Math.random() < 0.5 ? 3 : 4;
   const digits2 = Math.random() < 0.5 ? 3 : 4;
 
   const num1 = Math.floor(Math.pow(10, digits1 - 1) + Math.random() * (Math.pow(10, digits1) - Math.pow(10, digits1 - 1)));
   const num2 = Math.floor(Math.pow(10, digits2 - 1) + Math.random() * (Math.pow(10, digits2) - Math.pow(10, digits2 - 1)));
 
-  // ตรวจว่ามีเลข 4 หลักไหม ถ้ามีให้เลข 4 หลักอยู่ด้านบน
   let top, bottom;
   if (num1 >= 1000 || num2 >= 1000) {
-    if (num1 >= num2) {
-      top = num1;
-      bottom = num2;
-    } else {
-      top = num2;
-      bottom = num1;
-    }
-  } else {
-    top = num1;
-    bottom = num2;
-  }
-
-const html = `
-  <div class="equation">
-    <div class="numbers">
-      <div>${top.toLocaleString()}</div>
-      <div>${bottom.toLocaleString()}</div>
-    </div>
-    <div class="operator">+</div>
-  </div>
-`;
+    top = Math.max(num1,num2);
+    bottom = Math.min(num1,num2);
+  } else { top = num1; bottom = num2; }
 
   return {
-    question: html,
+    question: `
+      <div class="equation">
+        <div class="numbers">
+          <div>${top.toLocaleString()}</div>
+          <div>${bottom.toLocaleString()}</div>
+        </div>
+        <div class="operator">+</div>
+      </div>
+    `,
     correctAnswer: (num1 + num2).toString()
   };
 }
 
-let currentQuestion = generateQuestion();
+// ตัวแปรหลัก
+let currentQuestion;
 let score = 0;
 let questionCount = 0;
+let userAnswerDigits = [];
+let currentIndex = 0;
 
 const questionEl = document.getElementById("question");
-const answersEl = document.getElementById("answers");
+const userDigitsEl = document.getElementById("user-digits");
+const digitPad = document.getElementById("digit-pad");
+const leftBtn = document.getElementById("left-btn");
+const rightBtn = document.getElementById("right-btn");
+const submitBtn = document.getElementById("submit-btn");
+const quizBox = document.getElementById("quiz-box");
 
-// ฟังก์ชันแสดงโจทย์
+function initQuiz() {
+  showQuestion();
+}
+
 function showQuestion() {
-  if (questionCount >= 10) {
-    // ครบ 10 ข้อ → ซ่อนโจทย์ + ปุ่ม
-    questionEl.style.display = "none";
-    answersEl.style.display = "none";
-
-  // สร้าง element score
-  const scoreEl = document.createElement("div");
-  scoreEl.id = "score-display"; // ใช้ CSS ใหม่
-  scoreEl.textContent = `SCORE: ${score}/10`;
-  document.body.appendChild(scoreEl);
-
-  // สร้างปุ่มรีสตาร์ท
-  const restartBtn = document.createElement("button");
-  restartBtn.id = "restart-btn"; // ใช้ CSS ใหม่
-  restartBtn.textContent = "RESTART";
-  restartBtn.onclick = () => {
-    score = 0;
-    questionCount = 0;
-    currentQuestion = generateQuestion();
-    scoreEl.remove();
-    restartBtn.remove();
-    questionEl.style.display = "block";
-    answersEl.style.display = "block";
-    showQuestion();
+  if(questionCount>=10) {
+    quizBox.innerHTML = `
+      <div id="score-display">SCORE: ${score}/10</div>
+      <button id="restart-btn">RESTART</button>
+    `;
+    document.getElementById("restart-btn").onclick = () => {
+      score = 0; questionCount = 0;
+      initQuiz();
     };
-    document.body.appendChild(restartBtn);
-
     return;
   }
 
-  // แสดงโจทย์และปุ่ม
-  questionEl.style.display = "block";
-  answersEl.style.display = "block";
+  currentQuestion = generateQuestion();
   questionEl.innerHTML = currentQuestion.question;
 
-  answersEl.innerHTML = "";
-  const correct = currentQuestion.correctAnswer;
-  let options = [correct];
+  const len = currentQuestion.correctAnswer.length;
+  userAnswerDigits = Array(len).fill("");
+  currentIndex = 0;
 
-  while (options.length < 3) {
-    let fake = (parseInt(correct) + Math.floor(Math.random() * 200 - 100)).toString();
-    if (!options.includes(fake) && parseInt(fake) > 0) options.push(fake);
-  }
+  renderUserDigits();
+}
 
-  options.sort(() => Math.random() - 0.5);
+function renderUserDigits() {
+  userDigitsEl.innerHTML = "";
 
-  options.forEach(answer => {
-    let btn = document.createElement("button");
-    btn.textContent = parseInt(answer).toLocaleString(); // แสดง comma
-    btn.onclick = () => checkAnswer(answer, btn);
-    answersEl.appendChild(btn);
+  // รวมตัวเลขแล้วทำ comma
+  const answerStr = userAnswerDigits.join("").padStart(currentQuestion.correctAnswer.length, "0");
+  const number = parseInt(answerStr) || 0;
+  const formatted = number.toLocaleString();
+
+  // แยกแต่ละตัวอักษร (ตัวเลข + comma)
+  let charIndex = 0; // index สำหรับ userAnswerDigits
+  formatted.split("").forEach((char) => {
+    const span = document.createElement("span");
+    span.textContent = char;
+
+    // ไฮไลท์เฉพาะตัวเลข (ไม่รวม comma)
+    if (char !== ",") {
+      if (charIndex === currentIndex) {
+        span.style.borderBottom = "3px solid #569dcd";
+      } else {
+        span.style.borderBottom = "1px solid #ccc";
+      }
+      charIndex++;
+    } else {
+      // comma ไม่มีเส้นใต้
+      span.style.borderBottom = "none";
+    }
+
+    userDigitsEl.appendChild(span);
   });
 }
 
-// ฟังก์ชันตรวจคำตอบ
-function checkAnswer(answer, btn) {
-  const buttons = answersEl.querySelectorAll("button");
 
-  // ปิดการกดทุกปุ่ม
-   buttons.forEach(b => {
-    b.disabled = true;  // ป้องกันกดซ้ำ
-    if (b !== btn) b.classList.add("inactive"); // ทำปุ่มอื่นจาง
+// ปุ่มตัวเลข
+digitPad.querySelectorAll("button").forEach(btn=>{
+  btn.onclick = () => {
+    userAnswerDigits[currentIndex] = btn.textContent;
+    if(currentIndex<userAnswerDigits.length-1) currentIndex++;
+    renderUserDigits();
+  };
+});
+
+// ปุ่มเลื่อน
+leftBtn.onclick = ()=>{ if(currentIndex>0) currentIndex--; renderUserDigits(); };
+rightBtn.onclick = ()=>{ if(currentIndex<userAnswerDigits.length-1) currentIndex++; renderUserDigits(); };
+
+// ตรวจคำตอบ
+submitBtn.onclick = ()=>{
+  const answer = userAnswerDigits.join("");
+  const isCorrect = answer===currentQuestion.correctAnswer;
+
+  userDigitsEl.querySelectorAll("span").forEach(span=>{
+    span.classList.remove("correct","wrong");
+    span.classList.add(isCorrect?"correct":"wrong");
   });
 
-  // เปลี่ยนสีปุ่มที่ถูกกด
-  if (answer === currentQuestion.correctAnswer) {
-    btn.classList.add("correct"); // ฟ้า
-    score++;
-  } else {
-    btn.classList.add("wrong");   // แดง
-  }
-
+  if(isCorrect) score++;
   questionCount++;
 
+  const delay = isCorrect?800:1000;
 
-  // รอ 1.2 วิแล้วสุ่มโจทย์ใหม่
-  setTimeout(() => {
-    currentQuestion = generateQuestion();
-    showQuestion();
-  }, 600);
-}
+  setTimeout(()=>{ showQuestion(); }, delay);
+};
 
-// เริ่มต้น
-showQuestion();
+initQuiz();
