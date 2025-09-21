@@ -1,3 +1,4 @@
+// --- สุ่มโจทย์ 3-4 หลัก ---
 function generateQuestion() {
   const digits1 = Math.random() < 0.5 ? 3 : 4;
   const digits2 = Math.random() < 0.5 ? 3 : 4;
@@ -25,41 +26,84 @@ function generateQuestion() {
   };
 }
 
-// ตัวแปรหลัก
+// --- ตัวแปรหลัก ---
 let currentQuestion;
 let score = 0;
 let questionCount = 0;
 let userAnswerDigits = [];
 let currentIndex = 0;
 
-const questionEl = document.getElementById("question");
-const userDigitsEl = document.getElementById("user-digits");
-const digitPad = document.getElementById("digit-pad");
-const leftBtn = document.getElementById("left-btn");
-const rightBtn = document.getElementById("right-btn");
-const submitBtn = document.getElementById("submit-btn");
+let questionEl, userDigitsEl, digitPad, leftBtn, rightBtn, submitBtn;
 const quizBox = document.getElementById("quiz-box");
 
+// --- เริ่ม quiz / รีสตาร์ท ---
 function initQuiz() {
+  // คืนค่า HTML ของ quizBox
+  quizBox.innerHTML = `
+    <div id="question"></div>
+    <div id="user-digits"></div>
+    <div id="digit-pad">
+      <button>0</button><button>1</button><button>2</button>
+      <button>3</button><button>4</button><button>5</button>
+      <button>6</button><button>7</button><button>8</button>
+      <button>9</button>
+    </div>
+    <button id="left-btn">◀</button>
+    <button id="right-btn">▶</button>
+    <button id="submit-btn">SUBMIT</button>
+  `;
+
+  // รีเซ็ตตัวแปร
+  currentQuestion = generateQuestion();
+  userAnswerDigits = [];
+  currentIndex = 0;
+  score = 0;
+  questionCount = 0;
+
+  // เลือก DOM ใหม่
+  questionEl = document.getElementById("question");
+  userDigitsEl = document.getElementById("user-digits");
+  digitPad = document.getElementById("digit-pad");
+  leftBtn = document.getElementById("left-btn");
+  rightBtn = document.getElementById("right-btn");
+  submitBtn = document.getElementById("submit-btn");
+
+  // ผูก event ให้ปุ่มตัวเลข
+  digitPad.querySelectorAll("button").forEach(btn=>{
+    btn.onclick = () => {
+      userAnswerDigits[currentIndex] = btn.textContent;
+      if(currentIndex<userAnswerDigits.length-1) currentIndex++;
+      renderUserDigits();
+    };
+  });
+
+  // ปุ่มเลื่อนหลัก
+  leftBtn.onclick = ()=>{ if(currentIndex>0) currentIndex--; renderUserDigits(); };
+  rightBtn.onclick = ()=>{ if(currentIndex<userAnswerDigits.length-1) currentIndex++; renderUserDigits(); };
+
+  // ปุ่ม submit
+  submitBtn.onclick = checkAnswer;
+
+  // แสดงโจทย์ข้อแรก
   showQuestion();
 }
 
+// --- แสดงโจทย์ ---
 function showQuestion() {
   if(questionCount>=10) {
+    // ครบ 10 ข้อ
     quizBox.innerHTML = `
       <div id="score-display">SCORE: ${score}/10</div>
       <button id="restart-btn">RESTART</button>
     `;
-    document.getElementById("restart-btn").onclick = () => {
-      score = 0; questionCount = 0;
-      initQuiz();
-    };
+    document.getElementById("restart-btn").onclick = initQuiz;
     return;
   }
 
   currentQuestion = generateQuestion();
   questionEl.innerHTML = currentQuestion.question;
 
+  // เตรียม array สำหรับกรอกตัวเลข
   const len = currentQuestion.correctAnswer.length;
   userAnswerDigits = Array(len).fill("");
   currentIndex = 0;
@@ -67,6 +111,7 @@ function showQuestion() {
   renderUserDigits();
 }
 
+// --- แสดงตัวเลขที่กรอก พร้อม comma และ highlight หลัก ---
 function renderUserDigits() {
   userDigitsEl.innerHTML = "";
 
@@ -75,22 +120,15 @@ function renderUserDigits() {
   const number = parseInt(answerStr) || 0;
   const formatted = number.toLocaleString();
 
-  // แยกแต่ละตัวอักษร (ตัวเลข + comma)
-  let charIndex = 0; // index สำหรับ userAnswerDigits
-  formatted.split("").forEach((char) => {
+  let charIndex = 0;
+  formatted.split("").forEach(char => {
     const span = document.createElement("span");
     span.textContent = char;
 
-    // ไฮไลท์เฉพาะตัวเลข (ไม่รวม comma)
-    if (char !== ",") {
-      if (charIndex === currentIndex) {
-        span.style.borderBottom = "3px solid #569dcd";
-      } else {
-        span.style.borderBottom = "1px solid #ccc";
-      }
+    if(char !== ",") {
+      span.style.borderBottom = charIndex === currentIndex ? "3px solid #569dcd" : "1px solid #ccc";
       charIndex++;
     } else {
-      // comma ไม่มีเส้นใต้
       span.style.borderBottom = "none";
     }
 
@@ -98,36 +136,22 @@ function renderUserDigits() {
   });
 }
 
-
-// ปุ่มตัวเลข
-digitPad.querySelectorAll("button").forEach(btn=>{
-  btn.onclick = () => {
-    userAnswerDigits[currentIndex] = btn.textContent;
-    if(currentIndex<userAnswerDigits.length-1) currentIndex++;
-    renderUserDigits();
-  };
-});
-
-// ปุ่มเลื่อน
-leftBtn.onclick = ()=>{ if(currentIndex>0) currentIndex--; renderUserDigits(); };
-rightBtn.onclick = ()=>{ if(currentIndex<userAnswerDigits.length-1) currentIndex++; renderUserDigits(); };
-
-// ตรวจคำตอบ
-submitBtn.onclick = ()=>{
+// --- ตรวจคำตอบ ---
+function checkAnswer() {
   const answer = userAnswerDigits.join("");
-  const isCorrect = answer===currentQuestion.correctAnswer;
+  const isCorrect = answer === currentQuestion.correctAnswer;
 
-  userDigitsEl.querySelectorAll("span").forEach(span=>{
+  userDigitsEl.querySelectorAll("span").forEach(span => {
     span.classList.remove("correct","wrong");
-    span.classList.add(isCorrect?"correct":"wrong");
+    span.classList.add(isCorrect ? "correct" : "wrong"); // ใส่ทุก span
   });
 
   if(isCorrect) score++;
   questionCount++;
 
-  const delay = isCorrect?800:1000;
+  const delay = isCorrect ? 800 : 1000;
+  setTimeout(showQuestion, delay);
+}
 
-  setTimeout(()=>{ showQuestion(); }, delay);
-};
-
+// --- เริ่ม ---
 initQuiz();

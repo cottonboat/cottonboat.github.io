@@ -63,15 +63,11 @@ body {
 }
 
 #user-digits span.correct {
-  /*background-color: #569dcd;*/
   color: #569dcd;
-  /*font-weight: bold;*/
 }
 
 #user-digits span.wrong {
-  /*background-color: #c76b64;*/
   color: #c42f25;
-  /*font-weight: bold;*/
 }
 
 #digit-pad {
@@ -91,9 +87,17 @@ body {
   margin-bottom: 10px;
 }
 
-#controls button {
+#submit-btn {
   font-size: 1.5rem;
   padding: 10px 10px;
+  margin: 3px;
+  cursor: pointer;
+}
+
+#left-btn,
+#right-btn {
+  font-size: 1.4rem;
+  padding: 8px 15px 10px 15px;
   margin: 3px;
   cursor: pointer;
 }
