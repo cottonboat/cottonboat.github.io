@@ -1,17 +1,20 @@
-// --- สุ่มโจทย์ 3-4 หลัก ---
+// สร้าง question
 function generateQuestion() {
+  // สุ่มโจทย์ 3-4 หลัก
   const digits1 = Math.random() < 0.5 ? 3 : 4;
   const digits2 = Math.random() < 0.5 ? 3 : 4;
 
   const num1 = Math.floor(Math.pow(10, digits1 - 1) + Math.random() * (Math.pow(10, digits1) - Math.pow(10, digits1 - 1)));
   const num2 = Math.floor(Math.pow(10, digits2 - 1) + Math.random() * (Math.pow(10, digits2) - Math.pow(10, digits2 - 1)));
 
+  // ถ้ามีเลขหลักพันกับหลักร้อย ให้เอาหลักพันขึ้นด้านบน
   let top, bottom;
   if (num1 >= 1000 || num2 >= 1000) {
     top = Math.max(num1,num2);
     bottom = Math.min(num1,num2);
   } else { top = num1; bottom = num2; }
 
+  // return เป็น question
   return {
     question: `
       <div class="equation">
@@ -29,7 +32,6 @@ function generateQuestion() {
 // --- ตัวแปรหลัก ---
 let currentQuestion;
 let score = 0;
-let questionCount = 0;
 let userAnswerDigits = [];
 let currentIndex = 0;
 
@@ -67,9 +69,13 @@ function updateTimerDisplay() {
   }
 }
 
+// คำสั่งจบเกม
 function endQuiz() {
   // หยุด timer
   clearInterval(timerInterval);
+
+  // ซ่อน timer และ score display
+  document.getElementById("top-bar").style.display = "none";
 
   // ซ่อนส่วน quiz
   quizBox.style.display = "none";
@@ -77,10 +83,10 @@ function endQuiz() {
   // แสดงคะแนน
   const scoreEl = document.createElement("div");
   scoreEl.id = "score-display";
-  scoreEl.textContent = `SCORE: ${score}/10`;
+  scoreEl.textContent = `SCORE:${score}`;
   document.body.appendChild(scoreEl);
 
-  // ปุ่มรีสตาร์ท
+  // แสดงปุ่มรีสตาร์ท
   const restartBtn = document.createElement("button");
   restartBtn.id = "restart-btn";
   restartBtn.textContent = "RESTART";
@@ -98,7 +104,12 @@ function endQuiz() {
 // --- เริ่ม quiz / รีสตาร์ท ---
 function initQuiz() {
   // คืนค่า HTML ของ quizBox
+
   quizBox.innerHTML = `
+    <div id="top-bar">
+      <div id="live-score">score: 0</div>
+      <div id="timer"></div>
+    </div>  
     <div id="question"></div>
     <div id="user-digits"></div>
     <div id="digit-pad">
@@ -117,7 +128,6 @@ function initQuiz() {
   userAnswerDigits = [];
   currentIndex = 0;
   score = 0;
-  questionCount = 0;
   totalTime = 3 * 60;   // ตั้งเวลาใหม่
   startTimer();          // เริ่มนับถอยหลัง
 
@@ -151,16 +161,6 @@ function initQuiz() {
 
 // --- แสดงโจทย์ ---
 function showQuestion() {
-  if(questionCount>=10) {
-    // ครบ 10 ข้อ
-    quizBox.innerHTML = `
-      <div id="score-display">SCORE: ${score}/10</div>
-      <button id="restart-btn">RESTART</button>
-    `;
-    document.getElementById("restart-btn").onclick = initQuiz;
-    return;
-  }
-
   currentQuestion = generateQuestion();
   questionEl.innerHTML = currentQuestion.question;
 
@@ -208,7 +208,7 @@ function checkAnswer() {
   });
 
   if(isCorrect) score++;
-  questionCount++;
+  document.getElementById("live-score").textContent = `score: ${score}`;
 
   const delay = isCorrect ? 800 : 1000;
   setTimeout(showQuestion, delay);
