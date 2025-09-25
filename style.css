@@ -1,150 +1,162 @@
+
 body {
-  margin: 0;
-  padding: 0;
-  font-family: "Source Code Pro", monospace;
-  background: #f8f5eb;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  flex-direction: column;
-  text-align: center;
+	font-family: "Source Code Pro", monospace;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+  	padding: 0;
+	background: #f8f8eb;
+}
+button {
+	font-family: inherit;
 }
 
-#question {
-  font-size: 3.5rem;
-  text-align: right;
-  line-height: 1.5;
-  margin-bottom: 20px;
+/* top bar */
+#top-bar {	
+	width: 100vw;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	z-index: 1000;
 }
 
-.equation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 3.5rem;
-  margin-left: 60px;
-  /*margin-bottom: 60px;*/
-}
+			#live-score {
+				margin-left: 0.5rem;
+				font-size: 1.4rem;
+				color: #8b0000;  /* สีแดงเข้ม */
+			}
+			#timer {
+				margin-right: 0.5rem;
+				font-size: 1.4rem;
+				color: #aab5cc;
+			}
+			#timer.warning {
+				color: rgb(182, 27, 27);
+			}
 
-.operator {
-  margin-left: 0.3em;
-  margin-right: 0.1em;
-  display: flex;
-  align-items: left;
-}
 
-.numbers {
-  display: flex;
-  flex-direction: column;
-  text-align: right;
-  line-height: 1.5;
+#activity-area {
+	/* display: block; */
+	/* background-color: #aab5cc; */
+	width: 100vw;
 }
+	/* ---------- quiz-one ---------- */
+		
+		.numbers-box span {  /* สำหรับตัวเลขที่ไม่ใช่ปุ่มทั้งหมด เพื่อให้หลักตรงกัน */
+			display: inline-block;
+			vertical-align: middle;
+			width: 0.9ch;	
+			text-align: center;
+			/* background-color: #56cdbd;
+			border-right: 1px solid #149156; */
+			margin-left: 0.1ch;
+			transform: translateX(-0.1ch);			
+		}		
+		#user-input span {
+			border-bottom: 1.2px solid #8f8e84f0;
+			line-height: 3.5rem;
+			height: 4rem;
+			/* background-color: rgb(119, 189, 130); */
+		}
+		#user-input span.comma {
+			border-bottom: none;			
+		}
+		#user-input span.hilighted {
+			border-bottom: 3px solid #569dcd;
+		}
+		#user-input span.correct {
+			color: #569dcd;
+		}
+		#user-input span.wrong {
+			color: #c42f25;
+		}
 
-#user-digits {
-  font-family: "Source Code Pro", monospace;
-  font-size: 3.5rem;
-  letter-spacing: 0;
-  margin-bottom: 8px;
-  padding-top: 8px;             /* เว้นระยะให้เส้นไม่ติดตัวเลข */
-  border-top: 3px solid #569dcd; /* <-- เส้นขั้น */
-}
+		.quiz {
+			visibility: hidden;			
+		}
+		.question-box {
+			display: inline-flex;
+			position: absolute;
+			flex-direction: row;
+			/* background-color: #24417e; */
+			height: 23vh;
+			width: 100vw;
+			justify-content: flex-end;
+			font-size: 3.5rem;
+			padding-top: 10vh;
+			border-bottom: 3px solid #569dcd;
+		}
+				.numbers {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					text-align: right;
+				}
+				.operator {
+					justify-content: center;						
+					/* padding-left: 0.5rem; */
+					/* padding-right: 10vw; */
+					width: 20vw;
+				}
+				.hilighted {
+					border-bottom: 3px solid #569dcd;
+				}
+		#user-input-area {
+			/* background-color: #aab5cc; */
+			visibility: hidden;	
+			padding-top: 1rem;
+			margin-top: 30vh;
+		}
+			#user-input {
+				width: 80vw;
+				/* background-color: #203d7c; */
+				text-align: right;
+				font-size: 3.5rem;
+				margin-bottom: 10vh;
+			}
+			#upper-pad, #lower-pad, #control-pad {
+				display: flex;
+				/* background-color: #b72929; */
+				gap: 3vw;
+				justify-content: center;
+				margin-bottom: 3vw;
+			}
+			#control-pad {
+				margin-top: 3vh;
+			}
+			#upper-pad button, 
+			#lower-pad button {
+				width: 50px;
+				height: 50px;
+				font-size: 1.5rem;
+			}
+			#control-pad button {
+				font-size: 1.5rem;
+				padding: 10px 15px;
+			}
 
-#user-digits span {
-  display: inline-block;
-  width: 1ch;
-  text-align: center;
-  /*order-bottom: 1px solid #ccc;*/
-  border-bottom: 3px solid #569dcd;
-  margin: 0 0 50px 1px;
-}
 
-#user-digits span.active {
-  border-bottom: 3px solid #569dcd;
+/* quiz end display */
+#app-ended-display {
+	width: 100vw;
+	visibility: hidden;
+	position: absolute;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	/* background-color: #c42f25; */
+	align-items: center;	
 }
-
-#user-digits span.correct {
-  color: #569dcd;
-}
-
-#user-digits span.wrong {
-  color: #c42f25;
-}
-
-#digit-pad {
-  display: flex;
-  flex-wrap: wrap;       /* ให้ปุ่มขึ้นบรรทัดใหม่ถ้าเต็ม */
-  justify-content: center;
-  gap: 3px;             /* <-- ระยะห่างระหว่างปุ่ม (แนวนอน+แนวตั้ง) */
-  margin-bottom: 20px;  /* ระยะห่างจากส่วนอื่น */
-}
-
-#digit-pad button {
-  width: 50px;
-  height: 50px;
-  font-size: 1.5rem;
-  margin: 1px;
-  cursor: pointer;
-  margin-bottom: 0px;
-}
-
-#submit-btn {
-  font-size: 1.5rem;
-  padding: 10px 10px;
-  margin: 3px;
-  cursor: pointer;
-}
-
-#left-btn,
-#right-btn {
-  font-size: 1.4rem;
-  padding: 8px 15px 10px 15px;
-  margin: 3px;
-  cursor: pointer;
-}
-
-#score-display {
-  font-size: 3rem;
-  margin-bottom: 100px;
-}
-
-#restart-btn {
-  font-size: 2rem;
-  padding: 15px 40px;
-  border: none;
-  border-radius: 8px;
-  background: #569dcd;
-  color: white;
-  cursor: pointer;
-  margin-bottom: 80px;
-}
-
-/* timer และ score display */ 
-#top-bar {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 10px 20px;
-  box-sizing: border-box;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-#live-score {
-  color: #8b0000;  /* สีแดงเข้ม */
-  font-size: 1.5rem;
-}
-
-#timer {
-  position: fixed;
-  top: 10px;
-  right: 15px;
-  font-size: 1.5rem;
-  font-family: "Source Code Pro", monospace;
-  color: #aab5cc;
-  z-index: 1000;
-}
-#timer.warning {
-  color: rgb(182, 27, 27);
-}
+		#final-score {
+			text-align: center;
+			margin-bottom: 50px;
+			font-size: 3rem;
+		}
+		#restart-button {
+			font-size: 2rem;
+			padding: 0.3em 0.8em;			
+		}

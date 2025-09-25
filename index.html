@@ -9,35 +9,63 @@
 </head>
 <body>
 
-
-
-<div id="quiz-box">
-  <div id="question"></div>
-
-  <div id="user-digits"></div>
-
-  <div id="digit-pad">
-    <div>
-      <button>0</button>
-      <button>1</button>
-      <button>2</button>
-      <button>3</button>
-      <button>4</button>
-      <button>5</button>
-      <button>6</button>
-      <button>7</button>
-      <button>8</button>
-      <button>9</button>
-    </div>
-  </div>
-
-  <div id="controls">
-    <button id="left-btn">◀</button>
-    <button id="right-btn">▶</button>
-    <button id="submit-btn">SUBMIT</button>
-  </div>
+<div id="top-bar">
+	<div id="live-score"></div>
+	<div id="timer"></div>
 </div>
 
-<script src="script.js"></script>
+<div id="activity-area">
+	<div id="quiz-one" class="quiz">
+		<div class="question-box">
+			<div class="numbers">
+				<div id="quiz-one-number-one" class="numbers-box"></div>
+				<div id="quiz-one-number-two" class="numbers-box"></div>
+			</div>
+			<div class="operator"><p>+</p></div>
+		</div>
+	</div>
+	<div id="quiz-two" class="quiz">
+		<div class="question-box">
+			<div class="numbers">
+				<div id="quiz-two-number-one" class="numbers-box"></div>
+				<div id="quiz-two-number-two" class="numbers-box"></div>
+			</div>
+			<div class="operator"><p>-</p></div>
+		</div>		
+	</div>
+	<div id="quiz-three" class="quiz">
+		<div>Quiz Three</div>
+	</div>		
+	<div id="user-input-area">
+		<div id="user-input" class="numbers-box"></div>
+		<div id="upper-pad">
+			<button onclick="numberPadOnClick(0)">0</button>
+			<button onclick="numberPadOnClick(1)">1</button>
+			<button onclick="numberPadOnClick(2)">2</button>
+			<button onclick="numberPadOnClick(3)">3</button>
+			<button onclick="numberPadOnClick(4)">4</button>
+		</div>
+		<div id="lower-pad">
+			<button onclick="numberPadOnClick(5)">5</button>
+			<button onclick="numberPadOnClick(6)">6</button>
+			<button onclick="numberPadOnClick(7)">7</button>
+			<button onclick="numberPadOnClick(8)">8</button>
+			<button onclick="numberPadOnClick(9)">9</button>
+		</div>
+		<div id="control-pad">
+			<button id="left-btn">◀</button>
+			<button id="right-btn">▶</button>
+			<button id="submit-btn">SUBMIT</button>
+		</div>
+	</div>
+</div>
+
+<div id="app-ended-display">
+	<div id="final-score"></div>
+	<button id="restart-button" onclick="startApp()">RESTART</button>
+</div>
+
+<!-- script สำหรับระดับ 2 -->
+<script src="script.js"></script> 
 </body>
 </html>
