@@ -6,10 +6,14 @@ let answer = 0;
 let inputIndex = 0;
 let allQuiz = ["quizOne", "quizTwo"];
 let currentQuizId = "";
+let isReverseMode = false;
 
 // Elements จาก HTML
 const scoreElement = document.getElementById('live-score');
 const timerElement = document.getElementById('timer');
+const playPauseBtn = document.getElementById('play-pause-btn');
+const pauseScreenElement = document.getElementById('pause-screen');
+
 const topBarElement = document.getElementById('top-bar');
 const activityAreaElement = document.getElementById('activity-area');
 const appEndedDisplayElement = document.getElementById('app-ended-display');
@@ -18,6 +22,7 @@ const userInputAreaElement = document.getElementById('user-input-area');
 const userInputElement = document.getElementById('user-input');
 
 // ปุ่มควบคุม
+const reverseBtn = document.getElementById('reverse-btn');
 const leftBtn = document.getElementById('left-btn');
 const rightBtn = document.getElementById('right-btn');
 const submitBtn = document.getElementById('submit-btn');
@@ -34,12 +39,17 @@ const quizTwoNumTwoElement = document.getElementById('quiz-two-number-two');
 // Function เริ่มต้นเกม
 function startApp() {
     score = 0;
-    timeCountDown = 10 * 60; // 10 นาที
-    scoreElement.textContent = `score: ${score}`;
+    updateLiveScore();
+    timeCountDown = 3 * 60; // 3 นาที
+    updateTimer();
+
+    // เริ่มจับเวลา
+    clearInterval(timerInterval);
+    timerInterval = setInterval(updateTimer, 1000);
     
     // ตั้งค่าหน้าจอ
-    topBarElement.style.visibility = 'visible';
-    activityAreaElement.style.visibility = 'visible';
+    topBarElement.style.visibility = 'visible';    
+    activityAreaElement.style.removeProperty('display');
     appEndedDisplayElement.style.visibility = 'hidden';
     timerElement.classList.remove('warning');
 
@@ -49,10 +59,6 @@ function startApp() {
     quizThreeElement.style.visibility = 'hidden';
     userInputAreaElement.style.visibility = 'hidden';
 
-    // เริ่มจับเวลา
-    clearInterval(timerInterval);
-    timerInterval = setInterval(updateTimer, 1000);
-    
     // เริ่ม quiz แรก
     randomQuiz();
 }
@@ -76,14 +82,40 @@ function updateTimer() {
 
     if (timeCountDown <= 0) {
         clearInterval(timerInterval);
-        endGame();
+        endApp();
     }
 }
 
+// Function สำหรับหยุดเกม
+function pauseGame() {
+    clearInterval(timerInterval);
+    pauseScreenElement.style.visibility = 'visible';
+}
+
+// เพิ่ม: Function สำหรับเล่นเกมต่อ
+function resumeGame() {
+    clearInterval(timerInterval); // **แก้ไข: เคลียร์ interval เก่าก่อนเริ่มใหม่**
+    timerInterval = setInterval(updateTimer, 1000);
+    pauseScreenElement.style.visibility = 'hidden';
+}
+
+// Function สลับปุ่ม pause-play-btn
+playPauseBtn.onclick = () => {
+    if (playPauseBtn.textContent === '⏸') {
+        playPauseBtn.textContent = '▶';
+        playPauseBtn.style.paddingRight = "2px";
+        pauseGame();
+    } else {
+        playPauseBtn.textContent = '⏸';
+        playPauseBtn.style.paddingRight = ''; 
+        resumeGame();
+    }
+};
+
 // Function จบเกม
-function endGame() {
+function endApp() {
     topBarElement.style.visibility = 'hidden';
-    activityAreaElement.style.visibility = 'hidden';
+    activityAreaElement.style.display = 'none';
     appEndedDisplayElement.style.visibility = 'visible';
     finalScoreElement.textContent = `SCORE: ${score}`;
     timerElement.classList.remove('warning');
@@ -206,7 +238,8 @@ function createUserInputArea(length) {
 
     // กำหนด index การกรอก
     inputIndex = 0;
-    updateHilightedSpan();
+    checkInputDirection();
+    updateHilightedSpan();   
 }
 
 // Function อัปเดต span ที่กำลังจะกรอก
@@ -222,23 +255,50 @@ function updateHilightedSpan() {
         }
     });
 
+    // hilight ตำแหน่งที่กำลังกรอก
     if (inputIndex >= 0 && inputIndex < realSpans.length) {
         realSpans[inputIndex].classList.add('hilighted');
     }
 }
 
+// Function ตรวจสอบทิศทางการกรอก และสลับ hilight ไปที่ตำแหน่งแรกของการกรอก
+function checkInputDirection() {
+    const inputSpans = userInputElement.querySelectorAll('span:not(.comma)');
+    const spansCount = inputSpans.length;
+    if (isReverseMode) {
+        inputIndex = spansCount - 1; // สลับไปที่หลักสุดท้าย
+    } else {
+        inputIndex = 0; // สลับไปที่หลักแรก
+    }
+    updateHilightedSpan();
+}
+
 // Function เมื่อกดปุ่มตัวเลข
 function numberPadOnClick(number) {
     const spans = userInputElement.querySelectorAll('span:not(.comma)');
-    if (inputIndex < spans.length) {
+    if (inputIndex >= 0 && inputIndex < spans.length) {
         spans[inputIndex].textContent = number;
-        // ปรับปรุง logic เพื่อให้ไฮไลต์อยู่ที่ช่องสุดท้ายเมื่อกรอกครบ
-        if (inputIndex < spans.length - 1) {
-            inputIndex++;
+        // check ว่าจะเลื่อนการกรอกไปทิศทางไหน
+        if (isReverseMode) {
+            // โหมดกรอกย้อนกลับ: เลื่อนไปทางซ้าย (inputIndex--)
+            if (inputIndex > 0) {
+                inputIndex--;
+            }
+        } else {
+            // โหมดปกติ: เลื่อนไปทางขวา (inputIndex++)
+            if (inputIndex < spans.length - 1) {
+                inputIndex++;
+            }
         }
         updateHilightedSpan();
     }
 }
+
+// Function reverse ทิศทางการกรอก
+reverseBtn.onclick = () => {
+    isReverseMode = !isReverseMode;
+    checkInputDirection();    
+};
 
 // Function เมื่อกดปุ่มซ้าย
 leftBtn.onclick = () => {

@@ -25,14 +25,52 @@ button {
 				margin-left: 0.5rem;
 				font-size: 1.4rem;
 				color: #8b0000;  /* สีแดงเข้ม */
+				z-index: 1000;
 			}
 			#timer {
 				margin-right: 0.5rem;
 				font-size: 1.4rem;
 				color: #aab5cc;
+				z-index: 1000;
 			}
 			#timer.warning {
 				color: rgb(182, 27, 27);
+			}
+			#play-pause-btn {
+				position: absolute;
+				right: 5.5rem;
+				top: 0.3rem;
+				z-index: 1000;
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				border: none;
+				background-color: #449eff;
+				color: white;
+				font-size: 1.1rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;	
+				/* padding-top: -3px;	 */
+				padding-bottom: 4px;		
+			}
+			#pause-screen {
+				display: flex;
+				width: 100vw;
+				height: 100vh;
+				position: absolute;
+				justify-content: center;
+				align-items: center;
+				background-color: #d3d3c5;
+				/* background-color: rgba(209, 205, 194, 0.966); */
+				visibility: hidden;
+				/* backdrop-filter: blur(8px);
+				box-shadow: 0 0 50px 5px rgba(255, 255, 255, 0.6);
+				border-radius: 10px; */
+			}
+			#game-pause-sign{
+				font-size: 3rem;
+				transform: translateY(-3ch);
 			}
 
 
@@ -40,46 +78,18 @@ button {
 	/* display: block; */
 	/* background-color: #aab5cc; */
 	width: 100vw;
+	height: 100vh;
+	/* visibility: hidden; */
 }
-	/* ---------- quiz-one ---------- */
-		
-		.numbers-box span {  /* สำหรับตัวเลขที่ไม่ใช่ปุ่มทั้งหมด เพื่อให้หลักตรงกัน */
-			display: inline-block;
-			vertical-align: middle;
-			width: 0.9ch;	
-			text-align: center;
-			/* background-color: #56cdbd;
-			border-right: 1px solid #149156; */
-			margin-left: 0.1ch;
-			transform: translateX(-0.1ch);			
-		}		
-		#user-input span {
-			border-bottom: 1.2px solid #8f8e84f0;
-			line-height: 3.5rem;
-			height: 4rem;
-			/* background-color: rgb(119, 189, 130); */
-		}
-		#user-input span.comma {
-			border-bottom: none;			
-		}
-		#user-input span.hilighted {
-			border-bottom: 3px solid #569dcd;
-		}
-		#user-input span.correct {
-			color: #569dcd;
-		}
-		#user-input span.wrong {
-			color: #c42f25;
-		}
-
+	/* ---------- quiz-one ---------- */		
 		.quiz {
 			visibility: hidden;			
 		}
 		.question-box {
+			/* background-color: #24417e; */
 			display: inline-flex;
 			position: absolute;
-			flex-direction: row;
-			/* background-color: #24417e; */
+			flex-direction: row;			
 			height: 23vh;
 			width: 100vw;
 			justify-content: flex-end;
@@ -87,8 +97,11 @@ button {
 			font-size: 3.5rem;
 			padding-top: 10vh;
 			border-bottom: 3px solid #569dcd;
-			/* transform: translateX(15vw); */
+			
 		}
+				.numbers, .operator {
+					transform: translateX(3ch);
+				}
 				.numbers {
 					display: flex;
 					flex-direction: column;
@@ -99,7 +112,7 @@ button {
 					justify-content: center;						
 					/* padding-left: 0.5rem; */
 					/* padding-right: 10vw; */
-					width: 20vw;
+					width: 50vw;
 				}
 				.hilighted {
 					border-bottom: 3px solid #569dcd;
@@ -109,24 +122,60 @@ button {
 			visibility: hidden;	
 			padding-top: 1rem;
 			margin-top: 30vh;
+			position:relative;
 		}
-			#user-input {
-				width: 80vw;
-				/* transform: translateX(15vw); */
-				/* background-color: #203d7c; */
+			#user-input {			
+				/* background-color: #203d7c; */	
+				transform: translateX(calc(-50vw + 3ch));				
 				text-align: right;
 				font-size: 3.5rem;
 				margin-bottom: 10vh;
+				/* position: relative; */
 			}
+					.numbers-box span {  /* สำหรับตัวเลขที่ไม่ใช่ปุ่มทั้งหมด เพื่อให้หลักตรงกัน */
+						/* background-color: #56cdbd;
+						border-right: 1px solid #149156; */
+						display: inline-block;
+						vertical-align: middle;
+						width: 0.9ch;	
+						text-align: center;
+						margin-left: 0.1ch;
+						transform: translateX(-0.1ch);			
+					}		
+					#user-input span {
+						border-bottom: 1.2px solid #8f8e84f0;
+						line-height: 3.5rem;
+						height: 4rem;
+						/* background-color: rgb(119, 189, 130); */
+					}
+					#user-input span.comma {
+						border-bottom: none;			
+					}
+					#user-input span.hilighted {
+						border-bottom: 3px solid #569dcd;
+					}
+					#user-input span.correct {
+						color: #569dcd;
+					}
+					#user-input span.wrong {
+						color: #c42f25;
+					}
+					#reverse-btn {
+						position: absolute;
+						top: 3.8ch;						
+						transform: translateX(calc(50vw + 10.5ch));
+						font-size: 1.2rem;						
+					}
+
 			#upper-pad, #lower-pad, #control-pad {
 				display: flex;
 				/* background-color: #b72929; */
-				gap: 3vw;
+				gap: 0.7ch;
 				justify-content: center;
-				margin-bottom: 3vw;
+				margin-bottom: 1ch;
 			}
 			#control-pad {
-				margin-top: 3vh;
+				margin-top: 2ch;
 			}
 			#upper-pad button, 
 			#lower-pad button {
@@ -142,6 +191,7 @@ button {
 
 /* quiz end display */
 #app-ended-display {
+	/* background-color: #c42f25; */
 	width: 100vw;
 	visibility: hidden;
 	position: absolute;
@@ -151,7 +201,6 @@ button {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	/* background-color: #c42f25; */
 	align-items: center;	
 }
 		#final-score {
