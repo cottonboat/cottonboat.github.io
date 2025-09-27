@@ -41,8 +41,7 @@ button {
 			#timer.warning {
 				color: rgb(182, 27, 27);
 			}
-			#play-pause-btn {
-				/* all: unset; */
+			#play-pause-btn {				
 				position: absolute;
 				right: 5.5rem;
 				top: 0.3rem;
@@ -56,8 +55,7 @@ button {
 				font-size: 1.1rem;
 				display: flex;
 				justify-content: center;
-				align-items: center;	
-				/* padding-top: -3px;	 */
+				align-items: center;					
 				padding-bottom: 4px;		
 			}
 			#pause-screen {
@@ -127,7 +125,7 @@ button {
 			/* background-color: #aab5cc; */
 			visibility: hidden;	
 			padding-top: 1rem;
-			margin-top: 30vh;
+			margin-top: 23ch;
 			position:relative;			
 		}
 			#user-input {			
