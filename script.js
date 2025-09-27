@@ -101,12 +101,12 @@ function resumeGame() {
 
 // Function สลับปุ่ม pause-play-btn
 playPauseBtn.onclick = () => {
-    if (playPauseBtn.textContent === '⏸') {
+    if (playPauseBtn.textContent === '||') {
         playPauseBtn.textContent = '▶';
         playPauseBtn.style.paddingRight = "2px";
         pauseGame();
     } else {
-        playPauseBtn.textContent = '⏸';
+        playPauseBtn.textContent = '||';
         playPauseBtn.style.paddingRight = ''; 
         resumeGame();
     }

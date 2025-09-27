@@ -42,7 +42,7 @@ button {
 				color: rgb(182, 27, 27);
 			}
 			#play-pause-btn {
-				all: unset;
+				/* all: unset; */
 				position: absolute;
 				right: 5.5rem;
 				top: 0.3rem;
