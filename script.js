@@ -40,7 +40,7 @@ const quizTwoNumTwoElement = document.getElementById('quiz-two-number-two');
 function startApp() {
     score = 0;
     updateLiveScore();
-    timeCountDown = 3 * 60; // 3 นาที
+    timeCountDown = 5 * 60; // 5 นาที
     updateTimer();
 
     // เริ่มจับเวลา

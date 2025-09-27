@@ -1,7 +1,12 @@
 
+html, body {
+	max-width: 100%;
+	overflow-x: hidden; /* กัน scroll แนวนอน */
+}
 body {
 	font-family: "Source Code Pro", monospace;
-	min-height: 100vh;
+	min-height: 100%;
+	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
 	margin: 0;
@@ -14,7 +19,7 @@ button {
 
 /* top bar */
 #top-bar {	
-	width: 100vw;
+	width: 100%;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -37,6 +42,7 @@ button {
 				color: rgb(182, 27, 27);
 			}
 			#play-pause-btn {
+				all: unset;
 				position: absolute;
 				right: 5.5rem;
 				top: 0.3rem;
@@ -56,8 +62,8 @@ button {
 			}
 			#pause-screen {
 				display: flex;
-				width: 100vw;
-				height: 100vh;
+				width: 100%;
+				height: 100%;
 				position: absolute;
 				justify-content: center;
 				align-items: center;
@@ -77,8 +83,8 @@ button {
 #activity-area {
 	/* display: block; */
 	/* background-color: #aab5cc; */
-	width: 100vw;
-	height: 100vh;
+	width: 100%;
+	height: 100%;
 	/* visibility: hidden; */
 }
 	/* ---------- quiz-one ---------- */		
@@ -91,7 +97,7 @@ button {
 			position: absolute;
 			flex-direction: row;			
 			height: 23vh;
-			width: 100vw;
+			width: 100%;
 			justify-content: flex-end;
 			align-items: center; 			
 			font-size: 3.5rem;
@@ -100,7 +106,7 @@ button {
 			
 		}
 				.numbers, .operator {
-					transform: translateX(3ch);
+					/* transform: translateX(3ch); */
 				}
 				.numbers {
 					display: flex;
@@ -112,7 +118,7 @@ button {
 					justify-content: center;						
 					/* padding-left: 0.5rem; */
 					/* padding-right: 10vw; */
-					width: 50vw;
+					width: 20%;
 				}
 				.hilighted {
 					border-bottom: 3px solid #569dcd;
@@ -122,11 +128,13 @@ button {
 			visibility: hidden;	
 			padding-top: 1rem;
 			margin-top: 30vh;
-			position:relative;
+			position:relative;			
 		}
 			#user-input {			
-				/* background-color: #203d7c; */	
-				transform: translateX(calc(-50vw + 3ch));				
+				/* background-color: #203d7c;	 */
+				/* width: max-content; */
+				width: 80%;
+				/* transform: translateX(calc(-50vw + 3ch));				 */
 				text-align: right;
 				font-size: 3.5rem;
 				margin-bottom: 10vh;
@@ -192,7 +200,7 @@ button {
 /* quiz end display */
 #app-ended-display {
 	/* background-color: #c42f25; */
-	width: 100vw;
+	width: 100%;
 	visibility: hidden;
 	position: absolute;
 	top: 40%;
