@@ -1,30 +1,36 @@
 [
   {
     "title": "Thai Spelling Level 1 — First 100 Words",
+    "id": "thai_spelling_level1_v.1",
     "quizLocation": "assets/json/thai_spelling_level_1_first_100_words.json",
     "description": "Learn to spell the first 100 Thai words with confidence. This quiz is designed for English speakers who want to build a strong foundation in Thai spelling and word recognition.",
     "cover": "assets/images/quiz_cover001.jpg",
     "totalQuestion": 100,
+    "quizType": "retry-until-correct",
     "timeLimit": null,
     "categories": ["Thai", "All ages"],
     "age": "All ages"
   },
   {
     "title": "Thai Spelling Level 1 — Words 101-200",
+    "id": "thai_spelling_level1_v.2",
     "quizLocation": "assets/json/thai_spelling_level_1_words_101_200.json",
     "description": "Continue your Thai spelling practice with the next 100 commonly used words. This quiz is designed for English speakers who want to strengthen their Thai spelling skills and expand their vocabulary.",
     "cover": "assets/images/quiz_cover002.jfif",
     "totalQuestion": 100,
+    "quizType": "retry-until-correct",
     "timeLimit": null,
     "categories": ["Thai", "All ages"],
     "age": "All ages"
   },
   {
     "title": "Thai Spelling Level 1 — Words 201-300",
+    "id": "thai_spelling_level1_v.3",
     "quizLocation": "assets/json/thai_spelling_level_1_words_201_300.json",
     "description": "Advance your Thai spelling practice with words 201–300. This quiz is designed for English speakers who want to further strengthen their Thai spelling skills and expand their vocabulary.",
     "cover": "assets/images/quiz_cover003.jfif",
     "totalQuestion": 100,
+    "quizType": "retry-until-correct",
     "timeLimit": null,
     "categories": ["Thai", "All ages"],
     "age": "All ages"
