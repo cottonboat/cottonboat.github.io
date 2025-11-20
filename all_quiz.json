@@ -72,5 +72,23 @@
         "timeLimit": null
       }
     ]
-  }
+  },
+  {
+    "groupID": "test_new_quiz_group",
+    "groupName": "Test Add New Quiz",
+    "description": "ทดสอบการเพิ่ม quiz",
+    "price": "Free",
+    "categories": ["Thai", "English"],
+    "age": "All ages",
+    "details": [
+      {
+        "title": "Test Add New Quiz Book1",
+        "id": "test_new_quiz_group_v1",
+        "version": "1",
+        "totalQuestion": 5,
+        "quizType": "retry-until-correct",
+        "timeLimit": null
+      }
+    ]
+  }  
 ]
