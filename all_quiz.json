@@ -88,6 +88,14 @@
         "totalQuestion": 100,
         "quizType": "retry-until-correct",
         "timeLimit": null
+      },
+      {
+        "title": "Math Word Problems Level 1: 100 Exercises – Book 2",
+        "id": "math_word_problems_level1_v2",
+        "version": "1",
+        "totalQuestion": 100,
+        "quizType": "retry-until-correct",
+        "timeLimit": null
       }
     ]
   }
